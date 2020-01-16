@@ -1,0 +1,1 @@
+url ="http://www.goeas.kr/USR/ORG/MNU6/OrgDetail.do?orgType=" + k + "" #문자열에 변수 넣는 방법 큰따옴표로 끊기
