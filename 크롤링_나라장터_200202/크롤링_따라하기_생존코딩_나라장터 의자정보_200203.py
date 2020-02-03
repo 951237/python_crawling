@@ -3,7 +3,8 @@ from io import BytesIO
 from time import sleep
 from urllib.request import urlretrieve as download
 
-import pandas
+import lxml
+import pandas as pd
 from PIL import Image
 from openpyxl import Workbook
 from selenium import webdriver
@@ -85,6 +86,36 @@ driver.find_element_by_css_selector("input[id = 'priorObligPrdCrtfcCheck']").cli
 driver.execute_script("javascript:toSMPPIntgrSrchGoodsList('');")   #조회 버틑 클릭
 
 
+# 검색된 의자 이미지와 정보 가져오기
+
+아이템_리스트 = driver.find_elements_by_css_selector("tbody>tr>td>a[href^='javascript:toSMPPGoodsDtlInfo(']")     # 정규표현식 'java...'로시작하는 href태그를 수집
+
+스크립트_리스트 = []
+
+for i in 아이템_리스트:
+    script = i.get_attribute("href")
+    스크립트_리스트.append(script)
+
+# 엑셀파일 생성하기
+filename = r'C:\Users\User\PycharmProjects\python_crawling\크롤링_나라장터_200202\chair_list.xlsx'
+book = Workbook()
+book.save(filename)
+
+# 내용 가져오기
+with pd.ExcelWriter(filename, engine = 'openpyxl', mode = 'a') as writer:
+    writer.book = book
+    writer.sheets = { ws.title: ws for ws in book.worksheets }
+
+    for idx, script in enumerate(스크립트_리스트):
+        driver.execute_script(script)
+        print(idx)
+        sleep(1)
+        spec = pd.read_html(driver.page_source, index_col=0)[0].transpose()
+        if idx == 0:
+            spec.columns = map(lambda a: a.replace(" :", ''), spec.columns)
+            spec.to_excel(writer, startrow=0, sheet_name='Sheet', index=False)
+        else:
+            spec.to_excel(writer, startrow=writer.sheets['Sheet'].max_row, sheet_name='Sheet', index=False, header=False)
 
 
 
