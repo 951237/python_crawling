@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup as soup
 jiyuk = ['02','25']
 list_part = []
 list_link = []
-out = open('kyungGi_people_180920.txt','w')
+# out = open('kyungGi_people_180920.txt','w')
 
 for ji_i in jiyuk:
     url = 'http://www.goe.go.kr/edu/organ/selectWorkList.do?organId=' + ji_i + '00000000000&menuId=270151203155925&programId=PGM_1000000010'
@@ -45,6 +45,7 @@ for link_i in list_link:
         list_tr.append(tr_text)
 
     for tr in list_tr:
-        print(tr,file=out)
+        print(tr)
+        # print(tr,file=out)
 
-out.close()
+# out.close()
