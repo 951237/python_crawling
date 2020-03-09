@@ -12,7 +12,7 @@ bs_obj = BeautifulSoup(html, "html.parser")
 
 # 뉴스 크롤링 - 다음 댓글많은 뉴스
 def dnews_cmt():
-    all_pop_cmts = bs_obj.find('div',{'class':'pop_news pop_cmt'})
+    all_pop_cmts = bs_obj.findAll('div',{'class':'pop_news pop_cmt'})[0]
     title = all_pop_cmts.find('h3')
     all_a = all_pop_cmts.findAll('a',{'class':'link_txt'})
 
@@ -20,6 +20,18 @@ def dnews_cmt():
 
     for a_tag in all_a:
         a_tag = a_tag.text.lstrip().replace("                        ","").replace("\n", "  ")
+        b = print(a_tag)
+    return (a, b)
+
+def dnews_tit():
+    all_pop_tit = bs_obj.findAll('div',{'class':'pop_news pop_cmt'})[1]
+    title = all_pop_tit.find('h3')
+    all_a = all_pop_tit.findAll('a',{'class':'link_txt'})
+
+    a = print(title.text)
+
+    for a_tag in all_a:
+        a_tag = a_tag.text.lstrip().replace("                    ","").replace("\n", "  ")
         b = print(a_tag)
     return (a, b)
 
@@ -59,12 +71,15 @@ def dnews_now():
         i = i + 1
     return (a,b) #출력값 리턴하기
 
+
 dnews_now()
 print("")
 dnews_cmt()
 print("")
 dnews_age()
+print("")
+dnews_tit()
+
 
 input()
-
 
