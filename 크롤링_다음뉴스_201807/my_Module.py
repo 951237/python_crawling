@@ -39,6 +39,11 @@ def runSelenium():
     time.sleep(0.25)
     return driver
 
+# 함수 - bs4로 html 가져오기
+def get_html(url):
+    html = request.urlopen(url)
+    bs_obj = soup(html, "html.parser")
+    return bs_obj
 
     # print('페이지 파싱중...')
     # res = driver.execute_script("return document.documentElement.outerHTML")
