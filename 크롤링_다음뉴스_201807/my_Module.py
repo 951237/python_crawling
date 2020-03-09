@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-'''
-# 기본 이메일 보내기 스크립트
-# 이메일 보내기 기본틀로 사용
-'''
-
 def emailMe():
     import smtplib
     smtpobj = smtplib.SMTP('smtp.gmail.com', 587) #구글계정 개체 생성
@@ -45,10 +37,6 @@ def get_html(url):
     bs_obj = soup(html, "html.parser")
     return bs_obj
 
-    # print('페이지 파싱중...')
-    # res = driver.execute_script("return document.documentElement.outerHTML")
-    # bs_obj = BeautifulSoup(res, 'html.parser')
-    # print(bs_obj)
 
 if __name__ == '__main__':
     emailMe()
