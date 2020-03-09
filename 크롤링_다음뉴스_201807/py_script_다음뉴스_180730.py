@@ -3,7 +3,6 @@
 
 # 크롤링 - 다음뉴스 댓글 많은 뉴스
 from urllib import request
-
 from bs4 import BeautifulSoup
 
 #html 파싱
@@ -20,7 +19,7 @@ def dnews_cmt():
     a = print(title.text)
 
     for a_tag in all_a:
-        a_tag = a_tag.text.replace('\n',"").strip()
+        a_tag = a_tag.text.lstrip().replace("                        ","").replace("\n", "  ")
         b = print(a_tag)
     return (a, b)
 
@@ -67,3 +66,5 @@ print("")
 dnews_age()
 
 input()
+
+
