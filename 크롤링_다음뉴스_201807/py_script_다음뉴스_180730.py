@@ -65,3 +65,5 @@ print("")
 dnews_cmt()
 print("")
 dnews_age()
+
+input()
