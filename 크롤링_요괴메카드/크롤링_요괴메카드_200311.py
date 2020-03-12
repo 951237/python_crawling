@@ -1,24 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import os.path
 from urllib import request
 
 import requests
 from bs4 import BeautifulSoup as soup
 import datetime
-import  os.path
+import os.path
 
-URL = 'http://ghostmecard.choirock.com/character.php'
-BASE_URL = 'http://ghostmecard.choirock.com'
-테이머 = []
+URL = 'http://ghostmecard.choirock.com/character.php'   #요괴메카드 캐릭터 소개 페이지
+BASE_URL = 'http://ghostmecard.choirock.com'    # 이미지 파일다운 앞부분 주소
+테이머 = []    # 카테고리, 캐릭터 이름, 이미지 주소 담기 위한 리스트
+
+# 각 카테고리별 이동위한 웹페이지 id 값
 tabs = {
     'tab1': '테이머',
     'tab2': '십이지정령',
-    'tab3': '수호정',
+    'tab3': '수호정령',
     'tab4': '요괴',
     'tab5': '왕마요괴'
 }
 
-
+# 뷰티플솦 오브젝트 소스 가져오
 def get_html(url):
     html = request.urlopen(url)
     bs_obj = soup(html, "html.parser")
@@ -30,48 +33,56 @@ bs_obj = get_html(URL)
 # 캐릭터 세부정보 수집
 popups = bs_obj.findAll('div', {'class': 'popup_info'})
 
-# 이미지 링크 수집하
-def get_link(imgs):
+
+# 이미지 링크 수집하기(캐릭터 이름, 이미지 주소)
+def get_link(imgs, dics):
     for img in imgs:
-        dic = {
-            'name': img.get('alt'),
-            'link': img.get('src')
-        }
-    return dic
+        name = img.get('alt')   # alt 속성 가져오기
+        link = img.get('src')   # src 속성 가져오기
+        dics[name] = link       # 딕셔너리에 이름/링크 넣기
+    return dics
 
-# 테이머 이름과 이미지 링크 수집
+# 실행문 - 테이머 이름과 이미지 링크 수집
 for k, v in tabs.items():
-    _list = []
-    ids = bs_obj.find('div', {'id': k})
-    imgs = ids.findAll('img')
-    dic = {v : get_link(imgs)}
-    테이머.append(dic)
+    _list = []  # 전체 딕셔너리 담기 위한 리스트
+    _dic = {}   # 캐릭터 이름과, 주소 담을 딕셔너리
+    ids = bs_obj.find('div', {'id': k})     # div의 id값(tab) 찾기, 페이지 이동하기(테이머, 십이지정령, 왕마요괴등등)
+    imgs = ids.findAll('img')       # img 모두 찾기
+    dic = get_link(imgs, _dic)      # 이름, 링크 모으기 함수 실행
+    테이머.append({v : dic})          # 리스트에 담기
 
 
-# 이미지 파일 저장하기
-def download_img(_list):
-    for i in _list:
-        name = i['name']
-        link = BASE_URL + i['link']
+# 링크 파일 저장하기
+def save_file(filename):
+    os.makedirs(os.path.dirname(filename), exist_ok=True)   # 파일저장 경로가 없으면, 폴더 생성 있으면, 그냥 패스~
+    with open(filename, 'wb') as file:      # 파일 열기, 윈도우에서 encoding='utf-8' 고려하기
+        response = requests.get(link, stream=True)  # 링크 살아있는지 확인
 
-        # 파일이름 = 경로 + 파일이름
-        filename = os.path.join(f'/Users/mac/Documents/python_work/my_project/crawling/크롤링_요괴메카드/{name}', f'{name}.png')
+        if not response.ok:     # 링크가 유효하지 않으면 상태 출력
+            print(response)
 
-        # 파일저장 경로가 없으면, 폴더 생성 있으면, 그냥 패스~
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
-        with open(filename, 'wb') as file:
-            response = requests.get(link, stream=True)
+        for block in response.iter_content(1024):   # 1024 파일 단위로 쪼개서 저장하기. 파일 큰 경우 오류가 나면 다시 해야함
+            if not block:
+                break
+            file.write(block)
 
-            if not response.ok:
-                print(response)
-
-            for block in response.iter_content(1024):
-                if not block:
-                    break
-                file.write(block)
 
 for t in 테이머:
-    download_img(t)
+    for k, v in t.items():
+        dir_name = k    # 저장폴더 이름을 카테고리로 지정(테이머, 십이지정령 .... )
+        for i in range(len(v.keys())):  # 키값의 수만큼 반복하기
+            _keys = list(v.keys())      # 리스트 속의 벨류 딕셔너리의 키값을 리스트로 변환, 캐릭터 이름
+            _values = list(v.values())  # 리스트 속의 벨류 딕셔너리의 벨류값을 리스트로 변환, url 주소
+            name = _keys[i]             # 캐릭터 이름, 파일명
+            link = BASE_URL + _values[i]    # 전체 링크 주소
+
+            # 파일이름 = 경로 + 파일이름, join 함수를 이용하여 두개를 합치기 
+            filename = os.path.join(
+                f'/Users/mac/Documents/python_work/my_project/crawling/크롤링_요괴메카드/imgs/{dir_name}/',
+                f'{name}.png')
+
+            save_file(filename)
+
 
 # 캐릭터 세부정보 수집 popups
 def make_dic(popups):
