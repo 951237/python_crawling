@@ -25,6 +25,7 @@ tabs = {
 def get_html(url):
     html = request.urlopen(url)
     bs_obj = soup(html, "html.parser")
+    print('페이지 소스 로딩 완료!')
     return bs_obj
 
 
@@ -40,6 +41,7 @@ def get_link(imgs, dics):
         name = img.get('alt')  # alt 속성 가져오기
         link = img.get('src')  # src 속성 가져오기
         dics[name] = link  # 딕셔너리에 이름/링크 넣기
+    print('캐릭터 이름 및 링스 수집 완료!')
     return dics
 
 
@@ -69,6 +71,7 @@ def save_file(filename):
             if not block:
                 break
             file.write(block)
+    print(f'{filename} 파 저장완료!')
 
 
 all_char = []  # 전체 캐릭터이름 분류하기
@@ -94,8 +97,6 @@ for t in 테이머:
             dic_char_name[dir_name] = _keys
         all_char.append(_keys)
 
-print(all_char)
-
 list_tamer = all_char[0]
 list_12 = all_char[1]
 list_guard = all_char[2]
@@ -109,7 +110,6 @@ list_char = [list_12, list_tamer, list_ghost, list_guard, list_king_ghost]
 # 캐릭터 세부정보 수집 popups
 def get_char_disc(popups, list_chars):
     _list = []
-    dic_char_text = {}
     for popup in popups:
         srcs = popup.text.replace('                    	', "").split('\n')
         이름 = srcs[1]
@@ -117,11 +117,8 @@ def get_char_disc(popups, list_chars):
 
         # 만약 name이 테이머에 있다면, 딕셔너리에 이름과 설명 담기
         if 이름 in list_chars:
-            print(이름)
-            # dic_char_text['name'] = 이름
-            # dic_char_text['disc'] = 설명
             _list.append({'name' : 이름, 'disc' : 설명})
-    print(_list)
+    print(f'{이름} 정보 수집 완료!')
     return _list
 
 
