@@ -4,6 +4,8 @@ from urllib import request
 
 import requests
 from bs4 import BeautifulSoup as soup
+import datetime
+import  os.path
 
 URL = 'http://ghostmecard.choirock.com/character.php'
 BASE_URL = 'http://ghostmecard.choirock.com'
@@ -23,29 +25,27 @@ def get_html(url):
     return bs_obj
 
 
-bs_obj = get_html(url)
+bs_obj = get_html(URL)
 
 # 캐릭터 세부정보 수집
 popups = bs_obj.findAll('div', {'class': 'popup_info'})
 
-
 # 이미지 링크 수집하
-def get_link(imgs, _list):
+def get_link(imgs):
     for img in imgs:
         dic = {
             'name': img.get('alt'),
             'link': img.get('src')
         }
-        _list.append(dic)
-
+    return dic
 
 # 테이머 이름과 이미지 링크 수집
 for k, v in tabs.items():
-    v = []
-    k = bs_obj.find('div', {'id': k})
-    imgs = k.findAll('img')
-    get_link(imgs, v)
-    테이머.append(v)
+    _list = []
+    ids = bs_obj.find('div', {'id': k})
+    imgs = ids.findAll('img')
+    dic = {v : get_link(imgs)}
+    테이머.append(dic)
 
 
 # 이미지 파일 저장하기
@@ -53,7 +53,13 @@ def download_img(_list):
     for i in _list:
         name = i['name']
         link = BASE_URL + i['link']
-        with open(f'{name}.png', 'wb') as file:
+
+        # 파일이름 = 경로 + 파일이름
+        filename = os.path.join(f'/Users/mac/Documents/python_work/my_project/crawling/크롤링_요괴메카드/{name}', f'{name}.png')
+
+        # 파일저장 경로가 없으면, 폴더 생성 있으면, 그냥 패스~
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, 'wb') as file:
             response = requests.get(link, stream=True)
 
             if not response.ok:
@@ -64,6 +70,8 @@ def download_img(_list):
                     break
                 file.write(block)
 
+for t in 테이머:
+    download_img(t)
 
 # 캐릭터 세부정보 수집 popups
 def make_dic(popups):
@@ -108,5 +116,3 @@ def make_text(_list):
 # _list = make_dic(popups)    # 딕셔너리 생성
 # show_contents(_list)    # 화면 출력하기
 # make_text(_list)      # 파일 저장하기
-
-#
