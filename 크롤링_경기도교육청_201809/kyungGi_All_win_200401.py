@@ -1,11 +1,17 @@
 from urllib import request
 from bs4 import BeautifulSoup as soup
 
+def write_date():
+    mayday = date.today()  # 오늘 날짜 저장하기
+    return mayday.strftime('%y%m%d')
+
+today = write_date()
+
 # 북부 납부 부서 링크 가져오기
 jiyuk = ['02','25']
 list_part = []
 list_link = []
-out = open('kyungGi_people_180920.txt','w', encoding='utf8')
+out = open(f'kyungGi_people_{today}.txt','w', encoding='utf8')
 
 for ji_i in jiyuk:
     url = 'http://www.goe.go.kr/edu/organ/selectWorkList.do?organId=' + ji_i + '00000000000&menuId=270151203155925&programId=PGM_1000000010'
