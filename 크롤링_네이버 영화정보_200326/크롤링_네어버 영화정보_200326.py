@@ -18,7 +18,7 @@ class Review:
               "\n싫어요 : " + self.bad)
 
 
-URL = 'https://movie.naver.com/movie/bi/mi/basic.nhn?code=134963'
+URL = 'https://movie.naver.com/movie/bi/mi/basic.nhn?code=189001'
 
 
 def get_html(url):
