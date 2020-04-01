@@ -1,5 +1,6 @@
 from urllib import request
 from bs4 import BeautifulSoup as soup
+from datetime import date  # 날짜 호출하기
 
 def write_date():
     mayday = date.today()  # 오늘 날짜 저장하기
@@ -11,7 +12,7 @@ today = write_date()
 jiyuk = ['02','25']
 list_part = []
 list_link = []
-out = open(f'kyungGi_people_{today}.txt','w', encoding='utf8')
+# out = open(f'kyungGi_people_{today}.txt','w', encoding='utf8')
 
 for ji_i in jiyuk:
     url = 'http://www.goe.go.kr/edu/organ/selectWorkList.do?organId=' + ji_i + '00000000000&menuId=270151203155925&programId=PGM_1000000010'
@@ -48,6 +49,8 @@ for link_i in list_link:
         list_tr.append(tr_text)
 
     for tr in list_tr:
-        print(tr,file=out)
+        # print(tr,file=out)
+        print(tr)
 
-out.close()
+input()
+# out.close()
