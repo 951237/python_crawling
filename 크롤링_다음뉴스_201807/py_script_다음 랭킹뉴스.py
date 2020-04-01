@@ -4,6 +4,7 @@
 from urllib import request
 from bs4 import BeautifulSoup as soup
 
+
 def get_html(url):
     html = request.urlopen(url)
     bs_obj = soup(html, "html.parser")

@@ -1,5 +1,6 @@
 from urllib import request
 from bs4 import BeautifulSoup as soup
+from datetime import date  # 날짜 호출하기
 
 def write_date():
     mayday = date.today()  # 오늘 날짜 저장하기
