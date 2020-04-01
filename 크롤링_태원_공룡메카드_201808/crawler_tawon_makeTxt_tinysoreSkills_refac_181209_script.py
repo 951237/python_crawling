@@ -3,32 +3,18 @@
 
 # ## 공룡메카드 배틀기술 정리
 
-# In[92]:
-
-
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
 
 
-# In[93]:
-
-
 url = 'https://namu.wiki/w/%ED%83%80%EC%9D%B4%EB%8B%88%EC%86%8C%EC%96%B4#s-4'
 list_tinyskill = []
-
-
-# In[94]:
-
 
 def get_page(): #웹드라이버 가동
     driver = webdriver.Chrome()
     driver.get(url)
     return driver
-
-
-# In[95]:
-
 
 def arrange_html(p_driver): #페이지에서 불필요한 부분 없애고 필요한 부분만 추출
     res = driver.execute_script("return document.documentElement.outerHTML")
@@ -53,9 +39,6 @@ def arrange_html(p_driver): #페이지에서 불필요한 부분 없애고 필�
     return target_p
 
 
-# In[96]:
-
-
 def make_dic(p_target, p_list): #타이니소어와 기술들을 사전으로 만들기
     k = 0
     for i in range(int(len(p_target)/9)):
@@ -75,9 +58,6 @@ def make_dic(p_target, p_list): #타이니소어와 기술들을 사전으로 �
     return p_list
 
 
-# In[121]:
-
-
 def make_txt(p_list): #파일 생성하기
     print('파일을 생성중...')
     print()
@@ -94,9 +74,6 @@ def make_txt(p_list): #파일 생성하기
 
 
 # #### 실행문
-
-# In[123]:
-
 
 driver = get_page()
 time.sleep(2)

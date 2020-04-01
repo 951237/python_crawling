@@ -46,6 +46,7 @@ for link_i in list_link:
 
     for tr in list_tr:
         print(tr)
+    print("\n\n")
         # print(tr,file=out)
 
 # out.close()
