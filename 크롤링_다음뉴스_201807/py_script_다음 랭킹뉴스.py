@@ -5,13 +5,10 @@ from urllib import request
 
 from bs4 import BeautifulSoup as soup
 
-<<<<<<< HEAD
-=======
+
 src = 'https://media.daum.net/ranking/popular'
 
 base = 'https://media.daum.net'
-
->>>>>>> c13feb32216025857e561763fab98ef98661867f
 
 def get_html(url):
     html = request.urlopen(url)
