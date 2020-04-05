@@ -78,8 +78,7 @@ def get_subject_list(onclick):
     return sub_links
 
 
-def display_contents(sub_links):
-    f = open('교과목 주제모음.txt','w')
+def display_contents(sub_links, f):
     for k, v in sub_links.items():
         print(f'{k} 출력합니다.')
         bs_obj = get_soup(v)
@@ -89,9 +88,10 @@ def display_contents(sub_links):
 
         for i in contents:
             print(i.text.strip(), file=f)
-        print(file=f)
-    f.close()
+        print("", file=f)
+    print("", file=f)
 
+f = open('/Users/mac/Documents/python_work/my_project/crawling/크롤링_아이스크림_과목별 내용_200404/교과목 주제모음.txt','w')
 
 for k, v in dic_grade.items():
     print(f'{k} 정보를 수집합니다.','\n')
@@ -99,11 +99,12 @@ for k, v in dic_grade.items():
     for kk, vv in dic_semestar.items():
         print(f'{kk} 내용을 수집합니다.')
         sub_links = get_subject_list(vv)
-        display_contents(sub_links)
+        display_contents(sub_links, f)
+
+f.close()
 
 
 
-print(dic_semestar.keys())
 
 
 # 단원 영역에서 차시 추출하기
