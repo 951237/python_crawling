@@ -5,13 +5,10 @@ from urllib import request
 
 from bs4 import BeautifulSoup as soup
 
-<<<<<<< HEAD
-=======
 src = 'https://media.daum.net/ranking/popular'
 
 base = 'https://media.daum.net'
 
->>>>>>> c13feb32216025857e561763fab98ef98661867f
 
 def get_html(url):
     html = request.urlopen(url)
@@ -45,18 +42,21 @@ def get_news(all_news):
     for a_tag in all_a:
         print(f'{i}위 : {a_tag.text}')
         i += 1
+        print()
 
 
 get_news(all_news)
 
-# 많이본 뉴스 출력
-urls = get_url(all_news)
-print()
+# # 많이본 뉴스 출력
+# urls = get_url(all_news)
+# print()
+#
+# for k, v in urls.items():
+#     if k != '열독률 높은':
+#         bs_obj = get_html(base+v)
+#         # print(base+v)
+#         all_news = bs_obj.find('div', {'class': 'rank_news'})
+#         get_news(all_news)
+#         print()
 
-for k, v in urls.items():
-    if k != '열독률 높은':
-        bs_obj = get_html(base+v)
-        # print(base+v)
-        all_news = bs_obj.find('div', {'class': 'rank_news'})
-        get_news(all_news)
-        print()
+input()
