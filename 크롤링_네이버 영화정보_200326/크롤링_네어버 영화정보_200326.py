@@ -18,7 +18,11 @@ class Review:
               "\n싫어요 : " + self.bad)
 
 
+<<<<<<< .merge_file_a19124
 URL = 'https://movie.naver.com/movie/bi/mi/basic.nhn?code=134963'
+=======
+URL = 'https://movie.naver.com/movie/bi/mi/basic.nhn?code=189001'
+>>>>>>> .merge_file_a16028
 
 
 def get_html(url):

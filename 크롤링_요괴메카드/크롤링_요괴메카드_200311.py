@@ -105,7 +105,12 @@ list_king_ghost = all_char[4]
 
 list_char = [list_12, list_tamer, list_ghost, list_guard, list_king_ghost]
 
+<<<<<<< .merge_file_a14712
 #캐릭터
+=======
+
+# 캐릭터
+>>>>>>> .merge_file_a08940
 
 # 캐릭터 세부정보 수집 popups
 def get_char_disc(popups, list_chars):
@@ -117,14 +122,21 @@ def get_char_disc(popups, list_chars):
 
         # 만약 name이 테이머에 있다면, 딕셔너리에 이름과 설명 담기
         if 이름 in list_chars:
+<<<<<<< .merge_file_a14712
             _list.append({'name' : 이름, 'disc' : 설명})
+=======
+            _list.append({'name': 이름, 'disc': 설명})
+>>>>>>> .merge_file_a08940
     print(f'{이름} 정보 수집 완료!')
     return _list
 
 
+<<<<<<< .merge_file_a14712
 
 
 
+=======
+>>>>>>> .merge_file_a08940
 # 캐릭터 정보 화면 출력
 def show_contents(_list):
     for lst in _list:
@@ -152,7 +164,13 @@ def make_text(_list):
 
 
 for i in list_char:
+<<<<<<< .merge_file_a14712
     _list = get_char_disc(popups, i)    # 딕셔너리 생성
     show_contents(_list)    # 화면 출력하기
     make_text(_list)      # 파일 저장하기
+=======
+    _list = get_char_disc(popups, i)  # 딕셔너리 생성
+    show_contents(_list)  # 화면 출력하기
+    make_text(_list)  # 파일 저장하기
+>>>>>>> .merge_file_a08940
     print()

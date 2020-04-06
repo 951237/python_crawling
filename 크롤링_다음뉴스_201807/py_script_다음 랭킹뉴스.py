@@ -5,11 +5,18 @@ from urllib import request
 
 from bs4 import BeautifulSoup as soup
 
+<<<<<<< .merge_file_a16028
+=======
+
+>>>>>>> .merge_file_a14324
 src = 'https://media.daum.net/ranking/popular'
 
 base = 'https://media.daum.net'
 
+<<<<<<< .merge_file_a16028
 
+=======
+>>>>>>> .merge_file_a14324
 def get_html(url):
     html = request.urlopen(url)
     bs_obj = soup(html, "html.parser")
