@@ -26,7 +26,6 @@ def dnews_cmt():
         link = li.find('a').get('href')
         txt = li.text.strip().replace("                    ","").replace("\n", "  ").replace("         "," :").replace("       "," /")
         print(txt, link)
-        print()
 
 
 # 댓글 많은 뉴스
@@ -46,7 +45,6 @@ def dnews_tit():
         txt = li.text.strip().replace("                    ", "").replace("\n", "  ").replace("         ", " :").replace(
             "       ", " /")
         print(txt, link)
-        print()
 
 # 뉴스 크롤링 - 다음 연령별 뉴스
 def dnews_age():
@@ -67,7 +65,6 @@ def dnews_age():
             link = li.get('href')
             print(f'{str(10 * i + 10)}대 : {li.text} / {link}')
             i = i + 1
-            print()
         print("")
 
 
@@ -83,7 +80,6 @@ def dnews_now():
         txt = content[0].text.strip().replace('\n'," / ")
         link = li.find('a').get('href')
         print(f'{i}. {txt} / {link}')
-        print()
         i += 1
 
 
