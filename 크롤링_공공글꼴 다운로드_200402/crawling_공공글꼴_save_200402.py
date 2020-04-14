@@ -1,9 +1,12 @@
 from selenium import webdriver
 from selenium.common.exceptions import *
 from time import sleep
+from bs4 import BeautifulSoup as soup
 
 
+BASE_URL = 'http://www.kogl.or.kr/'
 URL = 'https://www.culture.go.kr/sso/login.do?agentId=5'
+
 
 driver = webdriver.Chrome('/Users/mac/Documents/python_work/my_project/crawling/chromedriver_mac')    # 맥용 크롬드라이버 추가
 driver.get(URL)
@@ -16,24 +19,31 @@ def excute_script(script):
         except JavascriptException:
             sleep(1)
 
-# 로그인 하기
-print('로그인 창으로 이동합니다.')
-driver.find_element_by_css_selector("input#id").send_keys(input('아이디 : ')) #아이디입력
-driver.find_element_by_css_selector("input#pw").send_keys("비번입력 : ") # 비밀번호 입력
-excute_script("javascript:userIdStatusCheck();") # 로그인버튼 클릭
-sleep(10)
-
-print('공공누리 창으로 전환합니다.')
-driver.switch_to_window("공공누리") # 팝업창이 떠서 공공누리 홈페이지 브라우저 선택
+input("계속하려면 엔터키를 누르시오.")
 
 
-# 폰트페이지 이동리
-print('폰트 페이지로 이동합니다.')
-driver.get('http://www.kogl.or.kr/recommend/recommendDivView.do?recommendIdx=9501&division=font')
+# 글꼴 페이지 주소 가져오기
+html = driver.page_source
+bs_obj = soup(html, 'html.parser')
+
+# 글꼴페이지 링크 가져오기
+block = bs_obj.select('ul.recommend-list > li > div.subject')
+
+dic_link = {}
+for i in block:
+    title = i.text.strip()
+    link = i.find('a').get('href')
+    LINK = f'{BASE_URL}{link}'
+    dic_link[title] = LINK
+    print(title, LINK)
+
+print(dic_link)
+
+
+
+# 글꼴 다운로드 받기
+excute_script("javascript:recomOpenPop('popDownload_File');") #다운로드 클
 sleep(0.5)
-excute_script("javascript:recomOpenPop('popDownload_File');") #다운로드 클립
-sleep(0.5)
-
 # 팝업창 처리
 print('다운로드창에 정보를 입력합니다.')
 driver.find_element_by_css_selector("select#useType").click() #팝업창에서 활용용도 선택
