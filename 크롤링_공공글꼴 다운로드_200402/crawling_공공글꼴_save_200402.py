@@ -22,32 +22,46 @@ def excute_script(script):
 input("계속하려면 엔터키를 누르시오.")
 
 
-# 글꼴 페이지 주소 가져오기
-html = driver.page_source
-bs_obj = soup(html, 'html.parser')
+def get_link():
+    # 글꼴 페이지 주소 가져오기
+    html = driver.page_source
+    bs_obj = soup(html, 'html.parser')
 
-# 글꼴페이지 링크 가져오기
-block = bs_obj.select('ul.recommend-list > li > div.subject')
+    # 글꼴페이지 링크 가져오기
+    block = bs_obj.select('ul.recommend-list > li > div.subject')
 
-dic_link = {}
-for i in block:
-    title = i.text.strip()
-    link = i.find('a').get('href')
-    LINK = f'{BASE_URL}{link}'
-    dic_link[title] = LINK
-    print(title, LINK)
+    print("페이지 링크를 수집합니다.")
+    dic_link = {}
+    for i in block:
+        title = i.text.strip()
+        link = i.find('a').get('href')
+        LINK = f'{BASE_URL}{link}'
+        dic_link[title] = LINK
+        # print(title, LINK)
+    return dic_link
 
-print(dic_link)
 
+def download_font():
+    # 글꼴 다운로드 받기
+    excute_script("javascript:recomOpenPop('popDownload_File');") #다운로드 클
+    sleep(0.5)
+    # 팝업창 처리
+    print('다운로드창에 정보를 입력합니다.')
+    driver.find_element_by_css_selector("select#useType").click() #팝업창에서 활용용도 선택
+    driver.find_element_by_xpath('//*[@id="useType"]/option[3]').click() #팝업창 세부용도 선택
+    driver.find_element_by_css_selector("input#agree").click() # 개인정보 이용 동의
+    excute_script("javascript:recomDownloadFile('9500');") # 다운로드 클릭
+    print('다운로드를 완료!')
+    sleep(1)
 
+# 실행하기
 
-# 글꼴 다운로드 받기
-excute_script("javascript:recomOpenPop('popDownload_File');") #다운로드 클
-sleep(0.5)
-# 팝업창 처리
-print('다운로드창에 정보를 입력합니다.')
-driver.find_element_by_css_selector("select#useType").click() #팝업창에서 활용용도 선택
-driver.find_element_by_xpath('//*[@id="useType"]/option[3]').click() #팝업창 세부용도 선택
-driver.find_element_by_css_selector("input#agree").click() # 개인정보 이용 동의
-excute_script("javascript:recomDownloadFile('9500');") # 다운로드 클릭
-sleep(0.5)
+# 페이지 이동후 - 폰트 다운로드
+
+dic_link = get_link()
+
+for k, v in dic_link.items():
+    print(f'{k} 폰트 페이지로 이동합니다.')
+    driver.get(v)
+    sleep(1)
+    download_font()
