@@ -25,9 +25,9 @@ for k, v in ansan_part.items():  # 사전을 이용하여 여러개의 변수를
     print(str(v))
 
     for tbody in list_tbody:
-        print(tbody)
+        print(tbody, "\n")
 
-    print("")
+    print("===" * 50, "\n")
 
 # out.close()
 

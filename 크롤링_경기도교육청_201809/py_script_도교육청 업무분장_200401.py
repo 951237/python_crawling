@@ -50,7 +50,9 @@ for link_i in list_link:
 
     for tr in list_tr:
         # print(tr,file=out)
-        print(tr)
+        print(tr, "\n")
+
+    print("===" * 40, "\n")
 
 input()
 # out.close()
