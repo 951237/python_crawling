@@ -21,7 +21,7 @@ driver.get(URL)
 
 # 함수 만들기
 # 이미지 검색하여 이동하고 클릭하기
-def img_search_move_click(p_img_file, p_click='right'):
+def img_search_move_click(p_img_file, p_click=None):
 	loc_img = pa.locateCenterOnScreen(p_img_file)  # 이미지파일 센터값 저장
 	time.sleep(0.25)
 
@@ -37,13 +37,13 @@ def img_search_move_click(p_img_file, p_click='right'):
 
 
 # xpath 출력 해보기
-for i in range(29, 61):
+for i in range(50, 61):
 	v_xpath = f'//*[@id="Table_02"]/tbody/tr[1]/td[2]/table[2]/tbody/tr[{i * 2 + 6}]/td[3]'  # 수업영상 팝업 xpath
 	driver.find_element_by_xpath(v_xpath).click()
 	time.sleep(3)
 
 	# 주행하기 = pa.screenshot(region=(736, 177, 30, 30) ) # 강의실-주행하기 좌표 30*30으로 캡처하기
-	img_search_move_click('driver.png')
+	img_search_move_click('drive.png')
 
 	# 렛쯔 스터디 클릭
 	img_search_move_click('study.png')
@@ -62,3 +62,5 @@ for i in range(29, 61):
 	# 파일창 닫기
 	pa.hotkey('command', 'w')  # 파일창 닫기
 	time.sleep(1)
+
+# //*[@id="Table_02"]/tbody/tr[1]/td[2]/table[2]/tbody/tr[104]/td[3]
