@@ -16,10 +16,10 @@ import time
 
 urllib3.disable_warnings(InsecureRequestWarning)
 
-searchword1 = '삼각플라스크'
-# searchword2 = 'dog''
+searchword1 = '고정집게'
+# searchword2 = '핀치집게'
 # searchword3 = 'cartoon'
-searchurl = 'https://www.google.com/search?q=' + searchword1 + '&source=lnms&tbm=isch'
+searchurl = 'https://www.google.com/search?q=' + searchword1 +'&source=lnms&tbm=isch'
 dirs = 'pictures'
 maxcount = 200
 
