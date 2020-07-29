@@ -28,11 +28,11 @@ chromedriver = 'C:\\Users\\User\\Documents\\coding_python\\python_crawl\\chromed
 if not os.path.exists(dirs):
     os.mkdir(dirs)
 
-def download_google_staticimages():
 
+def download_google_staticimages():
     options = webdriver.ChromeOptions()
     options.add_argument('--no-sandbox')
-    #options.add_argument('--headless')
+    # options.add_argument('--headless')
 
     try:
         browser = webdriver.Chrome(chromedriver, options=options)
@@ -50,7 +50,7 @@ def download_google_staticimages():
     element = browser.find_element_by_tag_name('body')
 
     # Scroll down
-    #for i in range(30):
+    # for i in range(30):
     for i in range(50):
         element.send_keys(Keys.PAGE_DOWN)
         time.sleep(0.3)
@@ -70,7 +70,8 @@ def download_google_staticimages():
     print(f'Retry')
     time.sleep(0.5)
 
-    # Below is in japanese "show more result" sentences. Change this word to your lanaguage if you require.
+    # Below is in japanese "show more result" sentences. Change this word to
+    # your lanaguage if you require.
     browser.find_element_by_xpath('//input[@value="결과 더보기"]').click()
 
     # Scroll down 2
@@ -88,8 +89,8 @@ def download_google_staticimages():
             element.send_keys(Keys.PAGE_DOWN)
             time.sleep(0.3)
 
-    #elements = browser.find_elements_by_xpath('//div[@id="islrg"]')
-    #page_source = elements[0].get_attribute('innerHTML')
+    # elements = browser.find_elements_by_xpath('//div[@id="islrg"]')
+    # page_source = elements[0].get_attribute('innerHTML')
     page_source = browser.page_source
 
     soup = BeautifulSoup(page_source, 'lxml')
@@ -116,7 +117,8 @@ def download_google_staticimages():
             try:
                 res = requests.get(url, verify=False, stream=True)
                 rawdata = res.raw.read()
-                with open(os.path.join(dirs, 'img_' + str(count) + '.jpg'), 'wb') as f:
+                with open(os.path.join(dirs, 'img_' + str(count) + '.jpg'),
+                          'wb') as f:
                     f.write(rawdata)
                     count += 1
             except Exception as e:
@@ -125,6 +127,7 @@ def download_google_staticimages():
 
     browser.close()
     return count
+
 
 # Main block
 def main():
@@ -136,6 +139,7 @@ def main():
     print(f'\n')
     print(f'Download completed. [Successful count = {count}].')
     print(f'Total time is {str(total_time)} seconds.')
+
 
 if __name__ == '__main__':
     main()
