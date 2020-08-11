@@ -16,8 +16,8 @@ import time
 
 urllib3.disable_warnings(InsecureRequestWarning)
 
-searchword1 = 'pinch clamp'
-# searchword2 = 'dog''
+searchword1 = '레이저 보안경'
+# searchword2 = 'dog'
 # searchword3 = 'cartoon'
 searchurl = 'https://www.google.com/search?q=' + searchword1 + '&source=lnms&tbm=isch'
 dirs = 'pictures'
