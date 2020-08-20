@@ -1,6 +1,37 @@
 import requests
 from bs4 import BeautifulSoup
 
+# 이시간 주요 뉴스 - 예전 크롤링 기법
+def dnews_now(soup):
+    box_headline = soup.find("div", {"class": "box_headline"})
+    lis = box_headline.select('ul > li')
+
+    print("Daum 이시간 주요 뉴스")
+    i = 1
+    for li in lis[:5]:
+        content = li.find_all('strong')
+        txt = content[0].text.strip().replace('\n'," / ")
+        link = li.find('a').get('href')
+        print(f'{i}. {txt} / {link}')
+        i += 1
+    print()
+
+# 열독률 높은 뉴스 - 예전 크롤링 기법
+def dnews_cmt(soup):
+    all_pop_cmts = soup.findAll('div',{'class':'pop_news pop_cmt'})[0]
+    title = all_pop_cmts.find('h3')
+    lis  = all_pop_cmts.select('ol > li')
+    print(title.text)
+
+    for li in lis[:5]:
+        content = li.find_all('span')
+        rank = content[0].text
+        source = content[1].text
+        link = li.find('a').get('href')
+        txt = li.text.strip().replace("                    ","").replace("\n", "  ").replace("         "," :").replace("       "," /")
+        print(txt, link)
+    print()
+
 # 뷰티플 숩 객체 만들기
 def create_soup(p_url):
     # 유저에이전트 설정 - what is my user-agent 검색
@@ -15,8 +46,8 @@ def create_soup(p_url):
     soup = BeautifulSoup(res.text, "lxml")
     return soup
 
-def today_news():
-    print('=' * 25, "오늘의 뉴스", '=' * 25)
+# 새롭게 배운 크롤링 기법(최신)
+def 보류_뉴스():
     URL = "https://news.daum.net"
     soup = create_soup(URL) #뷰티플 숩 객체 만들기
     news = soup.find("ol", attrs={"class" : "list_popcmt"}).find_all("li") #뉴스목록 선택
@@ -27,6 +58,16 @@ def today_news():
         from_news = item.find('span', attrs={"class":"info_news"}).get_text() #뉴스 출처(방송사 및 신문사)
         print(f'{i+1}위: {title}({from_news}) / {link}') # 출력하기
     print()
+
+def today_news():
+    print('=' * 25, "오늘의 뉴스", '=' * 25)
+    URL = "https://news.daum.net"
+    soup = create_soup(URL) #뷰티플 숩 객체 만들기
+    #열독률 높은 뉴스
+    dnews_cmt(soup)
+
+    #이사간 주요 뉴스
+    dnews_now(soup)
 
 def today_weather():
     print('=' * 25, "오늘의 날씨", '=' * 25)
@@ -46,7 +87,7 @@ def today_weather():
     degree_feel = weather_area.find("strong", attrs={
         "class":"degree_feel"}).get_text() #체감온도
     newline = '\n'
-    print(f'날씨 요약 : {summary}{newline}오늘의 온도 : {degree_height} / {degree_low} / {degree_feel}')
+    print(f'날씨 요약 : {summary}{newline}오늘의 온도 : {degree_height} / {degree_low} / 체감온도 {degree_feel}')
 
     ttl_areas = div.find_all('div', attrs={"class":"ttl_area"}) # 세부날씨 정보
     charts = div.find_all('div', attrs = {"class" : "chart"}) # 세부날씨 수치
@@ -78,14 +119,17 @@ def today_english():
     eng_texts = texts[1].find_all('span', attrs={"class" : "conv_sub"}) #영어 지문
     print(title)
     # 영어지문 출력
+    print('영어 대화', "-"*30)
     for txt in eng_texts:
         print(txt.get_text())
     print()
 
     # 한글 지문 출력
+    print('한글 대화',"-"*30)
     for txt in kor_texts:
         print(txt.get_text())
 if __name__ == "__main__":
-    today_news()
     today_weather()
+    today_news()
     today_english()
+    input()
