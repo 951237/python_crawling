@@ -1,5 +1,6 @@
 import telegram
 
+
 # today_brief_bot 토큰
 token = '토큰'
 bot = telegram.Bot(token=token)
