@@ -1,4 +1,5 @@
 import requests
+import requests
 from bs4 import BeautifulSoup
 from noti import send
 
@@ -8,7 +9,7 @@ def create_soup(p_url):
     # 유저에이전트 설정 - what is my user-agent 검색
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36"
-        }
+    }
 
     # 링크 정보 받아오기
     res = requests.get(p_url, headers=headers)
@@ -19,7 +20,8 @@ def create_soup(p_url):
 
 
 def today_english():
-    send("===== 오늘의 영어회화 =====")
+    result = []
+    result.append("===== 오늘의 영어회화 =====")
     URL = "https://www.hackers.co.kr/?c=s_eng/eng_contents/I_others_english"
     soup = create_soup(URL)
     # 오늘의 회화 주제
@@ -29,23 +31,25 @@ def today_english():
     texts = soup.find_all("div", attrs={"class": "conv_txt"})
     kor_texts = texts[0].find_all('span', attrs={"class": "conv_sub"})  # 한글 지문
     eng_texts = texts[1].find_all('span', attrs={"class": "conv_sub"})  # 영어 지문
-    send(title)
+    result.append(title)
     # 영어지문 출력
-    send('영어 대화')
+    result.append('영어 대화')
     for txt in eng_texts:
-        send(txt.get_text())
-    # send()
+        result.append(txt.get_text())
+    # result.append()
 
     # 한글 지문 출력
-    send('한글 대화')
+    result.append('한글 대화')
     for txt in kor_texts:
-        send(txt.get_text())
+        result.append(txt.get_text())
+
+    return result
 
 
-def today_weather():
-    send("===== 오늘의 날씨 =====")
-    URL = "https://n.weather.naver.com/today/02590140"  # 네이버 날씨
-    soup = create_soup(URL)
+def today_weather(p_region, p_url):
+    result = []
+    result.append(f"===== 오늘의 {p_region}날씨 =====")
+    soup = create_soup(p_url)
     div = soup.find("div", attrs={"class": "today_weather"})  # 날씨 전체 구쳑 선택
     weather_area = div.find("div",
                             attrs={"class": "weather_area"})  # 오늘의 날씨 요약 선택
@@ -55,18 +59,18 @@ def today_weather():
     # 날씨 상태
     current_degree = weather_area.find("strong", attrs={
         "class": "current"
-        }).get_text()  # 현재온도
+    }).get_text()  # 현재온도
     degree_height = weather_area.find("strong", attrs={
         "class": "degree_height"
-        }).get_text()  # 최고온도
+    }).get_text()  # 최고온도
     degree_low = weather_area.find("strong", attrs={
         "class": "degree_low"
-        }).get_text()  # 최저온도
+    }).get_text()  # 최저온도
     degree_feel = weather_area.find("strong", attrs={
         "class": "degree_feel"
-        }).get_text()  # 체감온도
+    }).get_text()  # 체감온도
     newline = '\n'
-    send(
+    result.append(
         f'날씨 요약 : {summary}{newline}오늘의 온도 : {degree_height} / {degree_low} / 체감온도 {degree_feel}')
 
     ttl_areas = div.find_all('div', attrs={"class": "ttl_area"})  # 세부날씨 정보
@@ -84,19 +88,21 @@ def today_weather():
     sun = ttl_areas[3].find("em", {"class": "level_text"}).get_text()
     sun_value = charts[2].find("strong", {"class": "value"}).get_text()
 
-    send(f'미세먼지 : {dust}({value}) / 초미세먼지 : {cho_dust}({cho_value}) / 자외선 : '
-         f'{sun}({sun_value}) ')
+    result.append(f'미세먼지 : {dust}({value}) / 초미세먼지 : {cho_dust}({cho_value}) / 자외선 : '
+                  f'{sun}({sun_value}) ')
+    return result
 
 
 # 열독률 높은 뉴스 - 예전 크롤링 기법
-def today_new():
-    send("===== 오늘의 뉴스 =====")
+def today_news():
+    result = []
+    result.append("===== 오늘의 뉴스 =====")
     URL = "https://news.daum.net"
     soup = create_soup(URL)  # 뷰티플 숩 객체 만들기
     all_pop_cmts = soup.findAll('div', {'class': 'pop_news pop_cmt'})[0]
     title = all_pop_cmts.find('h3')
     lis = all_pop_cmts.select('ol > li')
-    send(title.text)
+    result.append(title.text)
 
     for li in lis[:5]:
         content = li.find_all('span')
@@ -106,12 +112,25 @@ def today_new():
         txt = li.text.strip().replace("                    ", "").replace("\n",
                                                                           "  ").replace(
             "         ", " :").replace("       ", " /")
-        send(f'{txt} / {link}')
-    send()
+        result.append(f'{txt} / {link}')
+    result.append("")
+
+    return result
 
 
 if __name__ == "__main__":
-    today_weather()
-    today_english()
-    today_new()
+    # URL[0] : 새솔동, URL[1] : 안산시 사
+    URL = {'새솔동' : 'https://n.weather.naver.com/today/02590140',
+           '안산' : 'https://n.weather.naver.com/today/02271103'}
+    for k,v in URL.items():
+        weather_data = today_weather(k, v)
+        weather = ("\n".join(str(i) for i in weather_data))
+        send(weather)
 
+    english_data = today_english()
+    english = ("\n".join(str(i) for i in english_data))  # 리스트를 한줄로 출력 "" : 한줄로 이어서, "\n" 줄바꿈으로 출력
+    send(english)
+
+    news_data = today_news()
+    news = ("\n\n".join(str(i) for i in news_data))
+    send(news)
