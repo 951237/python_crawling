@@ -6,6 +6,7 @@ from urllib import request
 import requests
 
 
+# 자바스크립트 실행 및 대기하기 @hwp 코딩 잘하시는 분 소스 
 def excute_script(script):
     while True:
         try:
