@@ -40,7 +40,7 @@ html = driver.page_source  # 페이지 소스 가져오기
 bs_obj = soup(html, 'html.parser')  # 뷰티풀숩 오브젝트로 가져오기
 
 
-# -------- 3단계 : 단원명 링크 수집 후 동영상 다운로드 ----------------
+# -------- 3단계 : 단원명 링크 수집하기  ----------------
 # 차시별 주소 모으기
 # 블럭 찾기
 nav = bs_obj.find('aside', {'class': 'navigation sidebar'})
@@ -74,6 +74,8 @@ def get_link(link_script):
     link = video[0].get('src')
     return link
 
+
+# -------- 4단계 : 단원명 링크 다운로드 하기  ----------------
 
 # 링크 다운로드
 def link_download(p_name, p_link): # 단원명과 링크
