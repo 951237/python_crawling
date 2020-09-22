@@ -9,7 +9,7 @@ def dnews_now(soup):
 
         print("Daum 이시간 주요 뉴스")
         i = 1
-        for li in lis[:5]:
+        for li in lis:
             content = li.find_all('strong')
             txt = content[0].text.strip().replace('\n'," / ")
             link = li.find('a').get('href')
@@ -27,7 +27,7 @@ def dnews_cmt(soup):
         lis  = all_pop_cmts.select('ol > li')
         print(title.text)
 
-        for li in lis[:5]:
+        for li in lis:
             content = li.find_all('span')
             rank = content[0].text
             source = content[1].text
@@ -107,19 +107,21 @@ def today_weather():
         charts = div.find_all('div', attrs={"class": "chart"})  # 세부날씨 수치
 
         # 미세먼지
-        dust = ttl_areas[1].find("em", {"class": "level_text"}).get_text()
+        dust = ttl_areas[0].find("em", {"class": "level_text"}).get_text()
         value = charts[0].find("strong", {"class": "value"}).get_text()
 
         # 초미세먼지
-        cho_dust = ttl_areas[2].find("em", {"class": "level_text"}).get_text()
+        cho_dust = ttl_areas[1].find("em", {"class": "level_text"}).get_text()
         cho_value = charts[1].find("strong", {"class": "value"}).get_text()
 
         # 자외선
-        sun = ttl_areas[3].find("em", {"class": "level_text"}).get_text()
+        sun = ttl_areas[2].find("em", {"class": "level_text"}).get_text()
         sun_value = charts[2].find("strong", {"class": "value"}).get_text()
 
+        newline = '\n'
+
         print(f'미세먼지 : {dust}({value}) / 초미세먼지 : {cho_dust}({cho_value}) / 자외선 : '
-                      f'{sun}({sun_value}) ')
+                      f'{sun}({sun_value}){newline}')
     except:
         print("오류 : 오늘의 날씨 세부정보")
 
