@@ -76,45 +76,53 @@ def today_news():
     dnews_now(soup)
 
 def today_weather():
+    print('=' * 25, "오늘의 날씨", '=' * 25)
+    URL = "https://n.weather.naver.com/today/02590140" #네이버 날씨
+    soup = create_soup(URL)
+    div = soup.find("div", attrs={"class" : "today_weather"}) #날씨 전체 구쳑 선택
+    weather_area = div.find("div", attrs={"class" : "weather_area"}) # 오늘의 날씨 요약 선택
+
     try :
-        print('=' * 25, "오늘의 날씨", '=' * 25)
-        URL = "https://n.weather.naver.com/today/02590140" #네이버 날씨
-        soup = create_soup(URL)
-        div = soup.find("div", attrs={"class" : "today_weather"}) #날씨 전체 구쳑 선택
-        weather_area = div.find("div", attrs={"class" : "weather_area"}) # 오늘의 날씨 요약 선택
         # 날씨 한줄 정리
-        summary = weather_area.find("p", {"class" : "summary"}).get_text().strip().replace('\n'," / ")
+        summary = weather_area.find("p", {"class": "summary"
+                                          }).get_text().strip().replace('\n', " / ")
         # 날씨 상태
         current_degree = weather_area.find("strong", attrs={
-            "class":"current"}).get_text() # 현재온도
-        degree_height = weather_area.find("strong", attrs={
-            "class":"degree_height"}).get_text() # 최고온도
-        degree_low = weather_area.find("strong", attrs={
-            "class":"degree_low"}).get_text() #최저온도
-        degree_feel = weather_area.find("strong", attrs={
-            "class":"degree_feel"}).get_text() #체감온도
+            "class": "current"
+        }).get_text()  # 현재온도
+        degree_feel = weather_area.find("dd", attrs={
+            "class": "desc_feeling"
+        }).get_text()  # 체감온도
+        desc_rainfall = weather_area.find("dd", attrs={
+            "class": "desc_rainfall"
+        }).get_text()  # 강수확률
         newline = '\n'
-        print(f'날씨 요약 : {summary}{newline}오늘의 온도 : {degree_height} / {degree_low} / 체감온도 {degree_feel}')
+        print(
+            f'날씨 요약 : {summary}{newline}현재 온도 : {current_degree} /  체감온도 : {degree_feel} / 강수확률 : {desc_rainfall}')
+    except:
+        print("오류 : 오늘의 날씨 요약 부분")
 
-        ttl_areas = div.find_all('div', attrs={"class":"ttl_area"}) # 세부날씨 정보
-        charts = div.find_all('div', attrs = {"class" : "chart"}) # 세부날씨 수치
+    try :
+        ttl_areas = div.find_all('div', attrs={"class": "ttl_area"})  # 세부날씨 정보
+        charts = div.find_all('div', attrs={"class": "chart"})  # 세부날씨 수치
 
-        #미세먼지
-        dust = ttl_areas[1].find("em", {"class" : "level_text"}).get_text()
-        value = charts[0].find("strong", {"class":"value"}).get_text()
+        # 미세먼지
+        dust = ttl_areas[1].find("em", {"class": "level_text"}).get_text()
+        value = charts[0].find("strong", {"class": "value"}).get_text()
 
-        #초미세먼지
-        cho_dust = ttl_areas[2].find("em", {"class" : "level_text"}).get_text()
-        cho_value = charts[1].find("strong", {"class":"value"}).get_text()
+        # 초미세먼지
+        cho_dust = ttl_areas[2].find("em", {"class": "level_text"}).get_text()
+        cho_value = charts[1].find("strong", {"class": "value"}).get_text()
 
-        #자외선
-        sun = ttl_areas[3].find("em", {"class" : "level_text"}).get_text()
-        sun_value = charts[2].find("strong", {"class":"value"}).get_text()
+        # 자외선
+        sun = ttl_areas[3].find("em", {"class": "level_text"}).get_text()
+        sun_value = charts[2].find("strong", {"class": "value"}).get_text()
 
         print(f'미세먼지 : {dust}({value}) / 초미세먼지 : {cho_dust}({cho_value}) / 자외선 : '
-              f'{sun}({sun_value}) ', '\n')
+                      f'{sun}({sun_value}) ')
     except:
-        print ("오류 : 오늘의 날씨")
+        print("오류 : 오늘의 날씨 세부정보")
+
 
 def today_english():
     try:
