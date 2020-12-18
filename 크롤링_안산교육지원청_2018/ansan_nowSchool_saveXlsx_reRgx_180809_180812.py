@@ -63,6 +63,6 @@ for rowNum in range(int(len(tableLast)/6)):
     for colNum in range(6):
         sheet.cell(row = rowNum + 2, column = colNum + 1).value = tableLast[_i]
         _i = _i + 1
-wb.save('ansan_school&stu.xlsx')
+wb.save('안산학교 및 학생현황.xlsx')
 
 

@@ -5,6 +5,11 @@
 import urllib.request
 import bs4
 import openpyxl, re
+from datetime import date  # 날짜 호출하기
+
+today = date.today().strftime('%y%m%d')
+
+PATH_SAVE = "C:\\Users\\User\\Documents\\coding_python\\crawling\\크롤링_안산교육지원청_2018\\result\\"
 
 url ="http://www.goeas.kr/USR/ORG/MNU9/SchoolList.do?orgType=Z"
 html = urllib.request.urlopen(url)
@@ -16,7 +21,6 @@ all_tr = all_nowSc.findAll('tr')
 # print(all_tr)
 
 list_tr = []
-
 
 # 태그를 텍스트로 바꾸어서 리스트로 변환
 for tr in all_tr:
@@ -60,6 +64,6 @@ for rowNum in range(int(len(tableAll))):
     for colNum in range(6):
         # 리스트를 table[0][1]로 표현하기, 중첩된 리스트를 호출할 때 사용
         sheet.cell(row = rowNum + 2, column = colNum + 1).value = tableAll[rowNum][colNum]
-wb.save('ansan_school&stu_up.xlsx')
+wb.save(f'{PATH_SAVE}안산 학교 및 학생 현황_{today}.xlsx')
 
 

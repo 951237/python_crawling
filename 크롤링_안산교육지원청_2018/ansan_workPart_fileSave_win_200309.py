@@ -12,10 +12,11 @@ def write_date():
     return mayday.strftime('%y%m%d')
 
 _today = write_date()
+PATH_SAVE = 'crawling\\크롤링_안산교육지원청_2018\\result\\'
 
 ansan_part = {'A': '초등교육지원과', 'B': '중등교육지원과', 'C': '평생교육지원과', 'D': '경영지원과', 'E': '학교현장지원과', 'F': '교유시설과'}
 
-out = open('result_안산교육지원청 업무분장 현황_%s.txt' % (_today), 'w', encoding='utf-8')  # 파일저장 오늘날짜 형식으로 #느낀점
+out = open(f'{PATH_SAVE}result_안산교육지원청 업무분장 현황_{_today}.txt' , 'w', encoding='utf-8')  # 파일저장 오늘날짜 형식으로 #느낀점
 
 for k, v in ansan_part.items():  # 사전을 이용하여 여러개의 변수를 사용 #느낀점
     print('%s의 정보 불러오는 중....' % (v))

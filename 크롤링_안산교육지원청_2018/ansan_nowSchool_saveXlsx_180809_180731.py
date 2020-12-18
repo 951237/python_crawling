@@ -39,5 +39,5 @@ for _t in range(int(len(title))):
 for i in range(int(len(table))):
     sheet.cell(row = i + 2, column = 1).value = table[i]
 
-wb.save('ansan_school&stu.xlsx')
+wb.save('안산관내 학교 및 학생 현황.xlsx')
 

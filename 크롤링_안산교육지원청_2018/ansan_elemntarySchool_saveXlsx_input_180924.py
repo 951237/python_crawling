@@ -7,6 +7,13 @@ import bs4
 import openpyxl, pprint, os
 from datetime import date
 
+def write_date():
+    mayday = date.today()  # 오늘 날짜 저장하기
+    return mayday.strftime('%y%m%d')
+
+_today = write_date()
+PATH_SAVE = 'crawling\\크롤링_안산교육지원청_2018\\result\\'
+
 
 def getChoice():
     school = {'1': '초등학교', '2': '중학교', '3': '고등학교', '4': '특수학교'}
@@ -74,7 +81,7 @@ def writeContent(p_choice):
             sheet.cell(row = rowNum+2, column = colNum+1).value = list_td[i]
             i = i + 1
     print('파일 저장중...')
-    wb.save('contactSchool_%s_%s.xlsx' %(p_choice, date.today())) #엑셀 파일 저장하기
+    wb.save(f'{PATH_SAVE}안산관내 학교 주소 및 연락처_{p_choice}_{_today}.xlsx') #엑셀 파일 저장하기
     print('저장 완료...')
 
 

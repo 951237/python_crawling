@@ -16,7 +16,7 @@ _today = write_date()
 
 ansan_part = {'A': '초등교육지원과', 'B': '중등교육지원과', 'C': '평생교육지원과', 'D': '경영지원과', 'E': '학교현장지원과', 'F': '교유시설과'}
 
-out = open('ansan_workpart_%s.txt' % (_today), 'w')  # 파일저장 오늘날짜 형식으로 #느낀점
+out = open(f'ansan_workpart_{_today}.txt', 'w')  # 파일저장 오늘날짜 형식으로 #느낀점
 
 for k, v in ansan_part.items():  # 사전을 이용하여 여러개의 변수를 사용 #느낀점
     print('%s의 정보 불러오는 중....' % (v))
