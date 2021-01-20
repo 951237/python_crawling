@@ -1,6 +1,18 @@
 import pandas as pd 
 import sqlite3
 
+'''
+CREATE TABLE ansan_edu_office (
+    id text primary key,
+    department text not null,
+    position text,
+    _name text,
+    _charge integer not null,
+    create_time text not null
+);
+'''
+
+
 # DB 위치
 PATH_DB = "/Users/mac/Documents/문서 - 951237's 2017 Macbook Pro/coding_python/python_db/db_crawling.db"
 TABLE_NAME = 'ansan_edu_office'     # 테이블 이름
